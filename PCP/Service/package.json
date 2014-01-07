@@ -1,0 +1,10 @@
+{
+  "name": "Service",
+  "version": "0.0.1",
+  "description": "pcp web service",
+  "main": "server.js",
+  "author": {
+    "name": "arthurW",
+    "email": "yahui9119@foxmail.com"
+  }
+}
