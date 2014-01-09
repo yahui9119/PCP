@@ -18,7 +18,7 @@ namespace App
         IPEndPoint endpoint = new IPEndPoint(IPAddress.Parse("60.191.34.90"),10086);
         protected override void OnCreate(Bundle bundle)
         {
-                
+                  
             base.OnCreate(bundle);
             //Fullscreen
             RequestWindowFeature(WindowFeatures.NoTitle);
