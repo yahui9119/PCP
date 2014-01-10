@@ -34,7 +34,7 @@ namespace P2P.Server
         public Server()
         {
             userList = new UserCollection();
-            remotePoint = new IPEndPoint(IPAddress.Any, 0);
+            remotePoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), P2PConsts.SEV_Port);
             serverThread = new Thread(new ThreadStart(Run));
         }
         private void Run()
