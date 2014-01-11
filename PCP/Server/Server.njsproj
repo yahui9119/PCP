@@ -37,7 +37,8 @@
     <Content Include="package.json" />
     <Content Include="public\stylesheets\style.less" />
     <Content Include="README.md" />
-    <Content Include="views\index.ejs" />
+    <Content Include="views\index.html" />
+    <Content Include="views\pcp\test.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="public\" />
@@ -46,6 +47,7 @@
     <Folder Include="public\stylesheets\" />
     <Folder Include="routes\" />
     <Folder Include="views\" />
+    <Folder Include="views\pcp\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
   <ProjectExtensions>

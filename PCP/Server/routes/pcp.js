@@ -12,3 +12,7 @@ exports.login = function(req, res){
 exports.regist = function(req, res){
   res.send("pcp注册");
 };
+exports.test = function(req, res){
+   res.render('test', { title: 'test' });
+   
+};

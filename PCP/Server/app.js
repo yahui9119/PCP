@@ -9,13 +9,14 @@ var user = require('./routes/user');
 var pcp=require('./routes/pcp');
 var http = require('http');
 var path = require('path');
-
+var ejs=require('ejs');
 var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.engine('html',ejs.__express);//Ê¹ÓÃhtmlºó×º
+app.set('view engine', 'html');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
@@ -38,7 +39,7 @@ app.get('/users', user.list);
 app.get('/pcp',pcp.index);
 app.get('/pcp/login',pcp.login);
 app.get('/pcp/regist',pcp.regist);
-
+app.get('/pcp/test',pcp.test);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
