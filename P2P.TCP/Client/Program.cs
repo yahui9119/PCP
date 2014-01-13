@@ -39,6 +39,7 @@ namespace P2P.Client
             //Int32 bytes = socket.Receive(byteReceive);
             //string str = Encoding.Default.GetString(byteReceive, 0, bytes);
             //c.Start();
+            Console.ReadLine();
         }
     }
 }

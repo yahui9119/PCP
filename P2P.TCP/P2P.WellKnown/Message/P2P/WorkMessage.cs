@@ -7,6 +7,7 @@ namespace P2P.WellKnown
     /// <summary>
     /// 测试消息
     /// </summary>
+       [Serializable]
     public class WorkMessage : PPMessage
     {
 

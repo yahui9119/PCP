@@ -63,7 +63,7 @@ namespace c1
         #endregion
 
         #region 获取本地IPv4地址
-        public static string[] GetHostIPv4()
+        private static string[] GetHostIPv4()
         {
 
             int j = 0;

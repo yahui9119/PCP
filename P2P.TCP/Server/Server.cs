@@ -34,11 +34,12 @@ namespace P2P.Server
         public Server()
         {
             userList = new UserCollection();
-            remotePoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), P2PConsts.SEV_Port);
+            remotePoint = new IPEndPoint(IPAddress.Any, P2PConsts.SEV_Port);
             serverThread = new Thread(new ThreadStart(Run));
         }
         private void Run()
         {
+            Console.WriteLine("开始监听本地端口：" + P2PConsts.SEV_Port);
             while (server.IsBound)
             {
                 Thread clientThread = new Thread(new ParameterizedThreadStart(AcceptClient));
@@ -51,12 +52,20 @@ namespace P2P.Server
         private void AcceptClient(object obj)
         {
             Socket client = obj as Socket;
-            while (true)
+            Console.WriteLine("客户端连接："+client.RemoteEndPoint.ToString());
+            while (client.Connected)
             {
                 try
                 {
                 byte[] bytes = new byte[1024];
                 int ri = client.Receive(bytes);
+                if (ri == 0)
+                {
+
+                    Socket p2pcosket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    client.Disconnect(true);
+                    p2pcosket.Connect(client.RemoteEndPoint);
+                }
                 object msgObj = FormatterHelper.Deserialize(bytes);
                 Type msgType = msgObj.GetType();
                 IPEndPoint clientIPEndPoint = client.RemoteEndPoint as IPEndPoint;
@@ -70,7 +79,7 @@ namespace P2P.Server
                     //发送应答消息
                     GetUsersResponseMessage usersMsg = new GetUsersResponseMessage(userList);
                     byte[] buffer = FormatterHelper.Serialize(usersMsg);
-                    int si = server.Send(buffer);
+                    int si = client.Send(buffer);
                 }
                 else
                     if (msgType == typeof(LogoutMessage))
@@ -106,7 +115,7 @@ namespace P2P.Server
                             else
                             {
                                 SomeOneCallYouMessage transMsg2 = new SomeOneCallYouMessage(toUser.NetPoint);
-                                int si = server.Send(FormatterHelper.Serialize(transMsg2));
+                                int si = client.Send(FormatterHelper.Serialize(transMsg2));
                             }
                         }
                         else 
@@ -115,7 +124,7 @@ namespace P2P.Server
                             GetUsersResponseMessage srvResMsg = new GetUsersResponseMessage(userList);
                             foreach (User item in userList)
                             {
-                                server.Send(FormatterHelper.Serialize(srvResMsg));
+                                client.Send(FormatterHelper.Serialize(srvResMsg));
                             }
                         }
                 Thread.Sleep(500);
@@ -125,6 +134,7 @@ namespace P2P.Server
                 catch (Exception ex)
                 {
                     Console.WriteLine("信息处理出错："+ex.Message);
+                    Thread.Sleep(500);
                 }
             }
         }
@@ -133,10 +143,10 @@ namespace P2P.Server
             try
             {
                 server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPEndPoint local = new IPEndPoint(IPAddress.Any, 0);
-                server.Bind(local);
-                server.Listen(10);
+                server.Bind(remotePoint);
+                server.Listen(99);
                 serverThread.Start();
+                
             }
             catch (Exception ex)
             {

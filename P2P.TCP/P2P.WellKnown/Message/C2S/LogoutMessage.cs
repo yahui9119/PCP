@@ -7,6 +7,7 @@ namespace P2P.WellKnown
     /// <summary>
     /// 用户登出消息
     /// </summary>
+       [Serializable]
     public class LogoutMessage : CSMessage
     {
 

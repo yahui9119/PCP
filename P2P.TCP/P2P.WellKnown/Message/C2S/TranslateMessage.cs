@@ -7,6 +7,7 @@ namespace P2P.WellKnown
     /// <summary>
     /// 请求Purch Hole消息
     /// </summary>
+       [Serializable]
     public class TranslateMessage : CSMessage
     {
 

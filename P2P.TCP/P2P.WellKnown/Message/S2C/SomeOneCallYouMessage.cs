@@ -8,6 +8,7 @@ namespace P2P.WellKnown
     /// <summary>
     /// 转发请求Purch Hole消息
     /// </summary>
+       [Serializable]
     public class SomeOneCallYouMessage : SCMessage
 
     {
