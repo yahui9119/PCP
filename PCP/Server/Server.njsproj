@@ -31,21 +31,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
-    <Compile Include="routes\index.js" />
-    <Compile Include="routes\pcp.js" />
-    <Compile Include="routes\user.js" />
+    <Compile Include="controller\index.js" />
+    <Compile Include="controller\pcp.js" />
+    <Compile Include="controller\user.js" />
+    <Compile Include="models\pcp.js" />
     <Content Include="package.json" />
     <Content Include="public\stylesheets\style.less" />
     <Content Include="README.md" />
     <Content Include="views\index.html" />
     <Content Include="views\pcp\test.html" />
+    <Content Include="views\pcp\index.html" />
+    <Content Include="views\pcp\login.html" />
+    <Content Include="views\pcp\register.html" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="models\" />
+    <Folder Include="node_modules\" />
     <Folder Include="public\" />
     <Folder Include="public\images\" />
     <Folder Include="public\javascripts\" />
     <Folder Include="public\stylesheets\" />
-    <Folder Include="routes\" />
+    <Folder Include="controller\" />
     <Folder Include="views\" />
     <Folder Include="views\pcp\" />
   </ItemGroup>

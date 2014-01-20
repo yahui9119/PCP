@@ -4,12 +4,19 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');
-var pcp=require('./routes/pcp');
-var http = require('http');
+
+var mongoose = require('mongoose');
+
+var ejs=require('ejs');//模板引擎
+
+var less=require('less-middleware');
+
+var routes = require('./controller');
+
+var http = require('http');//http服务
+
 var path = require('path');
-var ejs=require('ejs');
+
 var app = express();
 
 // all environments
@@ -25,14 +32,15 @@ app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
 app.use(app.router);
-app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
+app.use(less({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
-
+var user = require('./controller/user');
+var pcp=require('./controller/pcp');
 app.get('/', routes.index);
 app.get('/users', user.list);
 //pcp
@@ -43,3 +51,5 @@ app.get('/pcp/test',pcp.test);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+mongoose.connect('mongodb://localhost/db');
