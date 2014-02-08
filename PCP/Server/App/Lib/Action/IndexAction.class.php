@@ -8,8 +8,8 @@
     }
     public function Index(){
         $assign= array();
-        $assign['ip']= $_SERVER['REMOTE_ADDR'];
-        $assign['point']= $_SERVER['REMOTE_PORT'];
+        $assign['ip']=GetClientIp();
+        $assign['point']= GetClientPort();
         $this->assign($assign);
         $this->display();
 

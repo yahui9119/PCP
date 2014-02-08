@@ -8,14 +8,12 @@
     }
     public function Index(){
         $assign= array();
-        $ip= $_SERVER['REMOTE_ADDR'];
-        $ip=$ip=='::1'?'127.0.0.1':$ip;
-        $assign['ip']=$ip;
-        $assign['point']= $_SERVER['REMOTE_PORT'];
+        $assign['ip']=GetClientIp();
+        $assign['point']= GetClientPort();
         $this->assign($assign);
         $data=M('pcp_member')->select();
         var_dump($data);
-        $this->display();
+        //$this->ajaxReturn($result,"json");
 
     }
     public function Login(){
@@ -36,7 +34,7 @@
             $result['result']=true;
             $result['message']="恭喜 登录成功";
         }
-         echo json_encode($result);
+        $this->ajaxReturn($result,"json");
     }
 
     public function Regist(){
@@ -46,17 +44,46 @@
     ///获取在线的个人账户服务器
     public function Online(){
         $member=session('member');
+        $result['result']=false;
+        $result['message']="请先登录！";
         if($member)
         {
-            $assign['ip']= $_SERVER['REMOTE_ADDR'];
-            $assign['point']= $_SERVER['REMOTE_PORT'];
-            $this->assign($assign);
-            $this->display();
+            //用户已经登录 添加记录
+            $assign['ip']=GetClientIp();
+            $assign['point']= GetClientPort();
+            //添加服务主机在线记录
+            
+            $onlinedata=M('pcp_onlinelog');
+            $onlinelog['ip']=GetClientIp();
+            $onlinelog['port']=GetClientPort();
+            $onlinelog['onlinekey']=md5(GetClientIp().$member['username']);//还未确定
+            $onlinelog['time']=date('Y-m-d H:i:s',time());
+            $onlinelog['mode']=1;
+            $onlinelog['username']=$member['username'];
+            if($onlinedata->create($onlinelog)){   
+                $state= $onlinedata->add();
+                if($state)
+                {
+                    sleep(10);//暂定延迟10秒
+                    $result['result']=true;
+                    $result['message']="添加成功";
+                    $this->ajaxReturn($result,"json");
+                   
+                }
+            }
+            $result['result']=false;
+            $result['message']="添加失败";
         }
         else
         {
-        	echo '请先登录';
+        	//搜寻服务主机
+            $username=$this->_get('username');
+            $wherepara['username']=array('eq',$username);
+            //vcode not yet!
+            $onlinedata=M('pcp_onlinelog')->where($wherepara)->order('time desc')->find();
+            $result['message']=$onlinedata;
         }
         
+        $this->ajaxReturn($result,"json");
     }
 }
