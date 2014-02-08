@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>Server</Name>
+    <ProjectGuid>24c8b5b0-fdeb-4806-8289-3e0abd37722d</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Server</RootNamespace>
+    <!-- important to be opened by PHP Tools, when also Phalanger Tools are installed -->
+    <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
+    <AssemblyName>Server</AssemblyName>
+    <IISProjectUrl>http://localhost:25659/</IISProjectUrl>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <IncludeDebugInformation>true</IncludeDebugInformation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <IncludeDebugInformation>false</IncludeDebugInformation>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App\Common\common.php" />
+    <Compile Include="App\Conf\config.php" />
+    <Compile Include="App\Conf\config_sae.php" />
+    <Compile Include="App\Lib\Action\IndexAction.class.php" />
+    <Compile Include="App\Lib\Action\PcpAction.class.php" />
+    <Compile Include="App\Lib\Action\SeaIndexAction.class.php" />
+    <Compile Include="App\Lib\ORG\Image.class.php" />
+    <Compile Include="App\Lib\ORG\String.class.php" />
+    <Compile Include="App\Lib\ORG\UploadFile.class.php" />
+    <Compile Include="App\Runtime\Cache\19cab20fc6b33a062b508e81516b05ad.php" />
+    <Compile Include="App\Runtime\Cache\40e6aca9821c8a8fd03bc3d4dfc44d58.php" />
+    <Compile Include="App\Runtime\Cache\e68702a72a15f7c9ab7e6bbd5f2290b9.php" />
+    <Compile Include="App\Runtime\Cache\f331a3f0d874c4248458495ef2c2c2d1.php" />
+    <Compile Include="index.php" />
+    <Compile Include="ThinkPHP\Common\common.php" />
+    <Compile Include="ThinkPHP\Common\functions.php" />
+    <Compile Include="ThinkPHP\Common\runtime.php" />
+    <Compile Include="ThinkPHP\Conf\alias.php" />
+    <Compile Include="ThinkPHP\Conf\convention.php" />
+    <Compile Include="ThinkPHP\Conf\debug.php" />
+    <Compile Include="ThinkPHP\Conf\mode.php" />
+    <Compile Include="ThinkPHP\Conf\tags.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\sae.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\build_first_app.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Common\common.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Common\functions.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Common\runtime.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Common\sae_common.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Common\sae_functions.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Conf\alias.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Conf\convention_sae.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Conf\tags.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Common\common.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Conf\config.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Conf\config_sae.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lib\Action\IndexAction.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lib\ORG\Image.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lib\ORG\String.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lib\ORG\UploadFile.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Behavior\ParseTemplateBehavior.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Behavior\ReadHtmlCacheBehavior.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Behavior\UpgradeNoticeBehavior.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Behavior\WriteHtmlCacheBehavior.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Core\Action.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Core\Log.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Core\SaeMC.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Core\Sms.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Core\Think.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Driver\Db\DbMysql.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Driver\Db\DbMysqli.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\Driver\Cache\CacheMemcache.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\Driver\Cache\CacheMemcache_sae.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\Library\ORG\Net\UploadFile_sae.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\Library\ORG\Util\Image_sae.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\Tool\SaeCacheBuilder\runtime.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\Lib\Template\ThinkTemplate.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\config.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\defines.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\ImitSqlite.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\imit_functions.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\Lang.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\Memcache.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\SaeCounter.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\SaeFetchurl.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\SaeImage.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\SaeKV.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\SaeKVClient.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\SaeMail.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\SaeMysql.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\SaeObject.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\SaeRank.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\SaeStorage.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\SaeTaskQueue.class.php" />
+    <Compile Include="ThinkPHP\Extend\Engine\Sae\SaeImit\sae_functions.php" />
+    <Compile Include="ThinkPHP\Lang\en-us.php" />
+    <Compile Include="ThinkPHP\Lang\zh-cn.php" />
+    <Compile Include="ThinkPHP\Lib\Behavior\CheckRouteBehavior.class.php" />
+    <Compile Include="ThinkPHP\Lib\Behavior\ContentReplaceBehavior.class.php" />
+    <Compile Include="ThinkPHP\Lib\Behavior\LocationTemplateBehavior.class.php" />
+    <Compile Include="ThinkPHP\Lib\Behavior\ParseTemplateBehavior.class.php" />
+    <Compile Include="ThinkPHP\Lib\Behavior\ReadHtmlCacheBehavior.class.php" />
+    <Compile Include="ThinkPHP\Lib\Behavior\ShowPageTraceBehavior.class.php" />
+    <Compile Include="ThinkPHP\Lib\Behavior\ShowRuntimeBehavior.class.php" />
+    <Compile Include="ThinkPHP\Lib\Behavior\TokenBuildBehavior.class.php" />
+    <Compile Include="ThinkPHP\Lib\Behavior\WriteHtmlCacheBehavior.class.php" />
+    <Compile Include="ThinkPHP\Lib\Core\Action.class.php" />
+    <Compile Include="ThinkPHP\Lib\Core\App.class.php" />
+    <Compile Include="ThinkPHP\Lib\Core\Behavior.class.php" />
+    <Compile Include="ThinkPHP\Lib\Core\Cache.class.php" />
+    <Compile Include="ThinkPHP\Lib\Core\Db.class.php" />
+    <Compile Include="ThinkPHP\Lib\Core\Dispatcher.class.php" />
+    <Compile Include="ThinkPHP\Lib\Core\Log.class.php" />
+    <Compile Include="ThinkPHP\Lib\Core\Model.class.php" />
+    <Compile Include="ThinkPHP\Lib\Core\Think.class.php" />
+    <Compile Include="ThinkPHP\Lib\Core\ThinkException.class.php" />
+    <Compile Include="ThinkPHP\Lib\Core\View.class.php" />
+    <Compile Include="ThinkPHP\Lib\Core\Widget.class.php" />
+    <Compile Include="ThinkPHP\Lib\Driver\Cache\CacheFile.class.php" />
+    <Compile Include="ThinkPHP\Lib\Driver\Cache\CacheMemcache.class.php" />
+    <Compile Include="ThinkPHP\Lib\Driver\Db\DbMysql.class.php" />
+    <Compile Include="ThinkPHP\Lib\Driver\Db\DbMysqli.class.php" />
+    <Compile Include="ThinkPHP\Lib\Driver\TagLib\TagLibCx.class.php" />
+    <Compile Include="ThinkPHP\Lib\Template\TagLib.class.php" />
+    <Compile Include="ThinkPHP\Lib\Template\ThinkTemplate.class.php" />
+    <Compile Include="ThinkPHP\ThinkPHP.php" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App\" />
+    <Folder Include="App\Common\" />
+    <Folder Include="App\Conf\" />
+    <Folder Include="App\Lang\" />
+    <Folder Include="App\Lib\" />
+    <Folder Include="App\Lib\Action\" />
+    <Folder Include="App\Lib\Behavior\" />
+    <Folder Include="App\Lib\Model\" />
+    <Folder Include="App\Lib\ORG\" />
+    <Folder Include="App\Lib\Widget\" />
+    <Folder Include="App\Runtime\" />
+    <Folder Include="App\Runtime\Cache\" />
+    <Folder Include="App\Runtime\Data\" />
+    <Folder Include="App\Runtime\Logs\" />
+    <Folder Include="App\Runtime\Temp\" />
+    <Folder Include="App\Tpl\" />
+    <Folder Include="App\Tpl\Index\" />
+    <Folder Include="App\Tpl\Pcp\" />
+    <Folder Include="App\Tpl\SeaIndex\" />
+    <Folder Include="Public\" />
+    <Folder Include="Public\upload\" />
+    <Folder Include="ThinkPHP\" />
+    <Folder Include="ThinkPHP\Common\" />
+    <Folder Include="ThinkPHP\Conf\" />
+    <Folder Include="ThinkPHP\Extend\" />
+    <Folder Include="ThinkPHP\Extend\Engine\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Common\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Conf\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Common\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Conf\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lang\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lib\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lib\Action\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lib\Behavior\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lib\Model\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lib\ORG\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lib\Widget\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Tpl\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Tpl\Index\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Behavior\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Core\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Driver\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Driver\Db\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\Driver\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\Driver\Cache\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\Library\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\Library\ORG\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\Library\ORG\Net\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\Library\ORG\Util\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\Tool\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Extend\Tool\SaeCacheBuilder\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\Lib\Template\" />
+    <Folder Include="ThinkPHP\Extend\Engine\Sae\SaeImit\" />
+    <Folder Include="ThinkPHP\Lang\" />
+    <Folder Include="ThinkPHP\Lib\" />
+    <Folder Include="ThinkPHP\Lib\Behavior\" />
+    <Folder Include="ThinkPHP\Lib\Core\" />
+    <Folder Include="ThinkPHP\Lib\Driver\" />
+    <Folder Include="ThinkPHP\Lib\Driver\Cache\" />
+    <Folder Include="ThinkPHP\Lib\Driver\Db\" />
+    <Folder Include="ThinkPHP\Lib\Driver\TagLib\" />
+    <Folder Include="ThinkPHP\Lib\Template\" />
+    <Folder Include="ThinkPHP\Tpl\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".htaccess" />
+    <Content Include="App\Common\index.html" />
+    <Content Include="App\Lang\index.html" />
+    <Content Include="App\Lib\Behavior\index.html" />
+    <Content Include="App\Lib\Model\index.html" />
+    <Content Include="App\Lib\Widget\index.html" />
+    <Content Include="App\Runtime\Logs\sae_debug.log" />
+    <Content Include="App\Tpl\Index\index.html" />
+    <Content Include="App\Tpl\Pcp\index.html" />
+    <Content Include="App\Tpl\Pcp\OnLine.html" />
+    <Content Include="App\Tpl\SeaIndex\index.html" />
+    <Content Include="App\Tpl\SeaIndex\upload.html" />
+    <Content Include="config.yaml" />
+    <Content Include="Public\upload\index.html" />
+    <Content Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Common\index.html" />
+    <Content Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lang\index.html" />
+    <Content Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lib\Behavior\index.html" />
+    <Content Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lib\Model\index.html" />
+    <Content Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lib\Widget\index.html" />
+    <Content Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Tpl\Index\index.html" />
+    <Content Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Tpl\Index\upload.html" />
+    <Content Include="ThinkPHP\Extend\Engine\Sae\SaeImit\sae.db" />
+    <Content Include="ThinkPHP\Extend\Engine\Sae\SaeImit\sae.sql" />
+    <Content Include="ThinkPHP\Extend\README.txt" />
+    <Content Include="ThinkPHP\LICENSE.txt" />
+    <Content Include="ThinkPHP\logo.png" />
+    <Content Include="ThinkPHP\README.txt" />
+    <Content Include="ThinkPHP\Tpl\default_index.tpl" />
+    <Content Include="ThinkPHP\Tpl\dispatch_jump.tpl" />
+    <Content Include="ThinkPHP\Tpl\page_trace.tpl" />
+    <Content Include="ThinkPHP\Tpl\think_exception.tpl" />
+  </ItemGroup>
+</Project>
