@@ -203,6 +203,7 @@
     <Content Include="App\Lib\Widget\index.html" />
     <Content Include="App\Runtime\Logs\sae_debug.log" />
     <Content Include="App\Tpl\Index\index.html" />
+    <Content Include="App\Tpl\Index\WebSocketClient.html" />
     <Content Include="App\Tpl\Pcp\index.html" />
     <Content Include="App\Tpl\Pcp\OnLine.html" />
     <Content Include="App\Tpl\SeaIndex\index.html" />
