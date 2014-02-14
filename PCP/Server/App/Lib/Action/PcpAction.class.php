@@ -19,7 +19,7 @@
     public function Login(){
         
         $result['result']=false;
-        $result['message']="用户名或密码错误";
+        $result['message']="username or password is error";
         $username=$this->_get('username');
         $password=$this->_get('password');
         $wherepara['username']=array('eq',$username);
@@ -32,7 +32,7 @@
             $member['ticket']=md5(date('Y-m-d H:i:s',time()));
             session('member',$member);
             $result['result']=true;
-            $result['message']="恭喜 登录成功";
+            $result['message']="login success";
         }
         $this->ajaxReturn($result,"json");
     }
@@ -45,7 +45,7 @@
     public function Online(){
         $member=session('member');
         $result['result']=false;
-        $result['message']="请先登录！";
+        $result['message']="please login！";
         if($member)
         {
             //用户已经登录 添加记录
@@ -66,13 +66,13 @@
                 {
                     sleep(10);//暂定延迟10秒
                     $result['result']=true;
-                    $result['message']="添加成功";
+                    $result['message']="add success";
                     $this->ajaxReturn($result,"json");
                    
                 }
             }
             $result['result']=false;
-            $result['message']="添加失败";
+            $result['message']="add fail";
         }
         else
         {
@@ -86,4 +86,17 @@
         
         $this->ajaxReturn($result,"json");
     }
+    static $ClientSocket=array();
+    //查看服务器状体，也用于第一次启动
+    public function ServerState( )
+    {
+        ignore_user_abort(true);//关掉浏览器，PHP脚本也可以继续执行.
+        set_time_limit(0);// 通过set_time_limit(0)可以让程序无限制的执行下去
+        $interval=60*30;// 每隔半小时运行
+        //while (true)//无限执行下去
+        //{
+        //    sleep(1);//暂定延迟1秒
+        //}
+    }
+    
 }
