@@ -79,6 +79,7 @@
         	//搜寻服务主机
             $username=$this->_get('username');
             $wherepara['username']=array('eq',$username);
+            $wherepara['time']=array('GT',date('Y-m-d H:i:s',time()));
             //vcode not yet!
             $onlinedata=M('pcp_onlinelog')->where($wherepara)->order('time desc')->find();
             $result['message']=$onlinedata;

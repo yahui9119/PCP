@@ -1,4 +1,5 @@
-﻿using PCP.Common;
+﻿using Fleck;
+using PCP.Common;
 using PCP.Model;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace PCP.Service
 {
-    public  class ClientSocket
+    public class ClientSocket
     {
         private string HostDoMain { get; set; }
         IPEndPoint localEP;
@@ -27,16 +28,20 @@ namespace PCP.Service
             httpSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             httpSocket.Bind(localEP);
 
-            ServerSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            //ServerSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             //请注意这一句。ReuseAddress选项设置为True将允许将套接字绑定到已在使用中的地址。 
-            ServerSocket.Bind(localEP);
+            //ServerSocket.Bind(localEP);
+            //钻头线程 http 10秒左右一次
+            HttpThread = new Thread(new ParameterizedThreadStart(HttpNeedleStart));
+            //等待连接 有连接说明打洞成功
+            ServerTread = new Thread(new ThreadStart(ServerStart));
         }
         /// <summary>
         /// 客户端可用端口
         /// </summary>
-        private  int ClientPort;
+        private int ClientPort;
         #region TCP/UDP检测端口是否重复
-        public  bool CheckPort(string tempPort)
+        public bool CheckPort(string tempPort)
         {
             System.Diagnostics.Process p = new System.Diagnostics.Process();
             p.StartInfo = new System.Diagnostics.ProcessStartInfo("netstat", "-an");
@@ -69,7 +74,7 @@ namespace PCP.Service
         #endregion
 
         #region 随机产生未被占用的端口
-        public  int RandomPort()
+        public int RandomPort()
         {
             while (true)
             {
@@ -84,7 +89,7 @@ namespace PCP.Service
         }
         #endregion
         #region 获取本地IPv4地址
-        public  string[] GetHostIPv4()
+        public string[] GetHostIPv4()
         {
 
             int j = 0;
@@ -108,7 +113,7 @@ namespace PCP.Service
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        private  string GetCookies(string s)
+        private string GetCookies(string s)
         {
             StringBuilder sbCookies = new StringBuilder();
 
@@ -124,7 +129,7 @@ namespace PCP.Service
             }
             return sbCookies.ToString();
         }
-        private  string GetLocationURL(string s)
+        private string GetLocationURL(string s)
         {
 
             string RtnString = string.Empty;
@@ -159,21 +164,36 @@ namespace PCP.Service
         /// <param name="data">请求数据</param>
         /// <param name="socket">使用的socket，默认随机实例化</param>
         /// <returns></returns>
-        public  Result HttpRequest(string url, string method, string data)
+        public Result HttpRequest(string url, string method, string data)
         {
             Regex reg = new Regex(@"(?<=://)([\w-]+\.)+[\w-]+(?<=/?)");
 
             string server = reg.Match(url, 0).Value.Replace("/", string.Empty);
-            string urlPath = url.Replace(string.Format("http://{0}",server), string.Empty);
+            string urlPath = url.Replace(string.Format("http://{0}", server), string.Empty);
+            httpSocket = null;
             httpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             httpSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             httpSocket.Bind(localEP);
             string gethtml = GetHtml(server, urlPath, method.ToUpper(), data, cookies, httpSocket);
-            cookies= GetCookies(gethtml);
-            int startjson=gethtml.IndexOf('{');
-            int endjson=gethtml.LastIndexOf('}');
-            string jsonresult = gethtml.Substring(startjson, endjson-startjson+1);
-            Result result= Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(jsonresult);
+            Result result=new Result() { result = false, message = "链接失败" };
+            if (string.IsNullOrWhiteSpace(gethtml))
+            {
+                return result;
+            }
+            string getcookies = GetCookies(gethtml);
+            cookies = string.IsNullOrWhiteSpace(getcookies)?cookies:getcookies;
+            int startjson = gethtml.IndexOf('{');
+            int endjson = gethtml.LastIndexOf('}');
+            try
+            {
+                string jsonresult = gethtml.Substring(startjson, endjson - startjson + 1);
+                result = Newtonsoft.Json.JsonConvert.DeserializeObject<Result>(jsonresult);
+            }
+            catch (Exception ex)
+            {
+                //log
+            }
+            
             return result;
         }
         /// <summary>
@@ -185,7 +205,7 @@ namespace PCP.Service
         /// <param name="data">提交的数据</param>
         /// <param name="Cookies">Cookies</param>
         /// <returns>返回页面的HTML</returns>
-        public  string GetHtml(string server, string url, string method, string data, string Cookies,Socket socket)
+        public string GetHtml(string server, string url, string method, string data, string Cookies, Socket socket)
         {
             string _method = method.ToUpper();
             string _url = string.Empty;
@@ -207,7 +227,7 @@ namespace PCP.Service
             //以下是拼接的HTTP头信息
             if (_method == "GET")
             {
-                 formatString.Append("");
+                formatString.Append("");
                 formatString.Append("{0} {1} HTTP/1.1\r\n");
                 formatString.Append("Host: {2}\r\n");
                 formatString.Append("User-Agent:Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7\r\n");
@@ -215,7 +235,7 @@ namespace PCP.Service
                 //formatString.Append("Keep-Alive: 300\r\n");
                 formatString.Append("Cookie:{3}\r\n");
                 formatString.Append("Connection: keep-alive\r\n\r\n");
-                sendString = string.Format(formatString.ToString(), _method,string.Format("{0}?{1}",url,data), server, Cookies);
+                sendString = string.Format(formatString.ToString(), _method, string.Format("{0}?{1}", url, data), server, Cookies);
             }
             else
             {
@@ -226,7 +246,7 @@ namespace PCP.Service
                 formatString.Append("Accept:text/html\r\n");
                 formatString.Append("Content-Type:application/x-www-form-urlencoded\r\n");
                 formatString.Append("Content-Length:{3}\r\n");
-                formatString.Append( "Referer:{2}");
+                formatString.Append("Referer:{2}");
                 //formatString.Append("Keep-Alive:300\r\n");
                 formatString.Append("Cookie:{4}\r\n");
                 formatString.Append("Connection: keep-alive\r\n\r\n");
@@ -238,18 +258,25 @@ namespace PCP.Service
             String strRetPage = null;
             IPAddress hostadd = Dns.Resolve(server).AddressList[0];
             IPEndPoint EPhost = new IPEndPoint(hostadd, 80);
-            Socket s = socket==null?new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp):socket;
-            s.Connect(EPhost);
-            if (!s.Connected)
+            try
             {
-                strRetPage = "链接主机失败";
+                socket.Connect(EPhost);
+            }
+            catch (Exception ex)
+            {
                 return strRetPage;
             }
-            s.Send(ByteGet, ByteGet.Length, SocketFlags.None);
-            strRetPage = Recv(s, ASCII);
+            
+            if (!socket.Connected)
+            {
+                //strRetPage = "链接主机失败";
+                return strRetPage;
+            }
+            socket.Send(ByteGet, ByteGet.Length, SocketFlags.None);
+            strRetPage = Recv(socket, ASCII);
             return strRetPage;
         }
-        public  String Recv(Socket sock, Encoding encode)
+        public String Recv(Socket sock, Encoding encode)
         {
             Byte[] buffer = new Byte[8192];
             StringBuilder sb = new StringBuilder();
@@ -268,30 +295,81 @@ namespace PCP.Service
             return sb.ToString();
         }
         #endregion
-        private  string cookies = string.Empty;
-        private  Socket httpSocket =  new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        private string cookies = string.Empty;
+        private Socket httpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private Socket ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         /// <summary>
         /// http针头是否开启
         /// </summary>
-        private  bool IsHttpNeedleStart;
+        private bool IsHttpNeedleStart;
         /// <summary>
         /// http线程
         /// </summary>
-        private  Thread HttpThread;
+        private Thread HttpThread;
         /// <summary>
         /// 本地服务器线程
         /// </summary>
-        private  Thread ServerTread;
+        private Thread ServerTread;
         /// <summary>
         /// 开启本地服务
         /// </summary>
-        public  void StartServer(User user)
+        public void StartServer(User user)
         {
-            //Timer timer = new Timer(HttpNeedle,user,0,11000);
-            HttpNeedle(user);
+
+            HttpThread.Start(user);
+
+            ServerTread.Start();
         }
-        public void HttpNeedle(object state)
+        private void ServerStart()
+        {
+            FleckLog.Level = LogLevel.Debug;
+            var allSockets = new List<IWebSocketConnection>();
+            var server = new WebSocketServer(string.Format("ws://localhost:{0}", ClientPort));
+            server.Start(socket =>
+            {
+                socket.OnOpen = () =>
+                {
+                    Console.WriteLine("Open!");
+                    allSockets.Add(socket);
+                };
+                socket.OnClose = () =>
+                {
+                    Console.WriteLine("Close!");
+                    allSockets.Remove(socket);
+                };
+                socket.OnMessage = message =>
+                {
+                    Console.WriteLine(message);
+                    allSockets.ToList().ForEach(s => s.Send("Echo: " + message));
+                };
+            });
+
+            while (true)
+            {
+                IsHttpNeedleStart = allSockets.Count != 0;
+                Thread.Sleep(50);
+            }
+            //var input = Console.ReadLine();
+            //while (input != "exit")
+            //{
+            //    foreach (var socket in allSockets.ToList())
+            //    {
+            //        socket.Send(input);
+            //    }
+            //    input = Console.ReadLine();
+            //}
+        }
+
+        private void HttpNeedleStart(object state)
+        {
+            //Timer timer = new Timer(HttpNeedle, state, 0, 11000);
+            HttpNeedle(state);
+        }
+        /// <summary>
+        /// 是否已经登录
+        /// </summary>
+        private bool IsLogined = false;
+        private void HttpNeedle(object state)
         {
             User user = (User)state;
             if (user == null)
@@ -299,7 +377,29 @@ namespace PCP.Service
                 return;
             }
             Result gethtml = HttpRequest(string.Format("{0}/Pcp/Login", HostDoMain), "GET", string.Format("username={0}&password={1}", user.username, user.password));
-            Result getgetOnlinehtml = HttpRequest(string.Format("{0}/Pcp/Online", HostDoMain), "GET", string.Empty);
+            while (true)
+            {
+                if (!IsHttpNeedleStart)
+                {
+                    if (!string.IsNullOrWhiteSpace(cookies) && cookies.IndexOf("PHPSESSID") >= 0)
+                    {
+                        IsLogined = true;
+                    }
+                    else
+                    {
+                        IsLogined = false;
+
+                    }
+                    if (IsLogined)
+                    {
+                        IsHttpNeedleStart = true;
+                        Result getgetOnlinehtml = HttpRequest(string.Format("{0}/Pcp/Online", HostDoMain), "GET", string.Empty);
+                        IsHttpNeedleStart = false;
+                    }
+                }
+                Thread.Sleep(50);//释放socket
+            }
+
         }
     }
 }
