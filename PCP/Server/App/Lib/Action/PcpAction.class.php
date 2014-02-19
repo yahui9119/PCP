@@ -79,10 +79,18 @@
         	//搜寻服务主机
             $username=$this->_get('username');
             $wherepara['username']=array('eq',$username);
-            $wherepara['time']=array('GT',date('Y-m-d H:i:s',time()));
+             $wherepara['time']=array('gt',date('Y-m-d H:i:s',strtotime('-10 second')));//-second
             //vcode not yet!
             $onlinedata=M('pcp_onlinelog')->where($wherepara)->order('time desc')->find();
-            $result['message']=$onlinedata;
+            if($onlinedata)
+            {
+            $result['result']=true;
+            $result['message']=$onlinedata['ip'].':'.$onlinedata['port'];
+            }
+            else
+            {
+                $result['message']='';
+            }
         }
         
         $this->ajaxReturn($result,"json");
@@ -94,10 +102,11 @@
         ignore_user_abort(true);//关掉浏览器，PHP脚本也可以继续执行.
         set_time_limit(0);// 通过set_time_limit(0)可以让程序无限制的执行下去
         $interval=60*30;// 每隔半小时运行
-        //while (true)//无限执行下去
-        //{
-        //    sleep(1);//暂定延迟1秒
-        //}
+        while (true)//无限执行下去
+        {
+            sleep(1);//暂定延迟1秒
+            echo 'test';
+        }
     }
     
 }
