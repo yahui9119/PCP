@@ -146,6 +146,7 @@
     <Folder Include="App\Tpl\Pcp\" />
     <Folder Include="App\Tpl\SeaIndex\" />
     <Folder Include="Public\" />
+    <Folder Include="Public\js\" />
     <Folder Include="Public\upload\" />
     <Folder Include="ThinkPHP\" />
     <Folder Include="ThinkPHP\Common\" />
@@ -208,7 +209,9 @@
     <Content Include="App\Tpl\Pcp\OnLine.html" />
     <Content Include="App\Tpl\SeaIndex\index.html" />
     <Content Include="App\Tpl\SeaIndex\upload.html" />
+    <Content Include="client.html" />
     <Content Include="config.yaml" />
+    <Content Include="Public\js\jquery.2.js" />
     <Content Include="Public\upload\index.html" />
     <Content Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Common\index.html" />
     <Content Include="ThinkPHP\Extend\Engine\Sae\DefaultApp\Lang\index.html" />

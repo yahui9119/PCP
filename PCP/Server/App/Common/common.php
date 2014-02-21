@@ -16,6 +16,6 @@ function GetClientPort()
 {
     return $_SERVER['REMOTE_PORT'];
 }
-
+global $ClientArr;
 
 ?>

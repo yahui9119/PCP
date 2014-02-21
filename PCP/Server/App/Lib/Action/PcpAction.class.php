@@ -2,8 +2,8 @@
 
 
 //欢迎页面
- class PcpAction extends Action {
-      protected function _initialize() {
+class PcpAction extends Action {
+    protected function _initialize() {
         header("Content-Type:text/html; charset=utf-8");
     }
     public function Index(){
@@ -24,7 +24,7 @@
         $password=$this->_get('password');
         $wherepara['username']=array('eq',$username);
         $wherepara['password']=array('eq',$password);//md5 not yet!
-                                                     //vcode not yet!
+        //vcode not yet!
         $data=M('pcp_member')->where($wherepara)->select();
         if($data){
             $member=array();
@@ -68,7 +68,7 @@
                     $result['result']=true;
                     $result['message']="add success";
                     $this->ajaxReturn($result,"json");
-                   
+                    
                 }
             }
             $result['result']=false;
@@ -79,13 +79,13 @@
         	//搜寻服务主机
             $username=$this->_get('username');
             $wherepara['username']=array('eq',$username);
-             $wherepara['time']=array('gt',date('Y-m-d H:i:s',strtotime('-10 second')));//-second
+            $wherepara['time']=array('gt',date('Y-m-d H:i:s',strtotime('-10 second')));//-second
             //vcode not yet!
             $onlinedata=M('pcp_onlinelog')->where($wherepara)->order('time desc')->find();
             if($onlinedata)
             {
-            $result['result']=true;
-            $result['message']=$onlinedata['ip'].':'.$onlinedata['port'];
+                $result['result']=true;
+                $result['message']=$onlinedata['ip'].':'.$onlinedata['port'];
             }
             else
             {
@@ -95,18 +95,49 @@
         
         $this->ajaxReturn($result,"json");
     }
-    static $ClientSocket=array();
-    //查看服务器状体，也用于第一次启动
-    public function ServerState( )
-    {
-        ignore_user_abort(true);//关掉浏览器，PHP脚本也可以继续执行.
-        set_time_limit(0);// 通过set_time_limit(0)可以让程序无限制的执行下去
-        $interval=60*30;// 每隔半小时运行
-        while (true)//无限执行下去
-        {
-            sleep(1);//暂定延迟1秒
-            echo 'test';
+    public function NeedleStart(){
+        //添加记录
+        $username=$this->_get('username');
+        $address = GetClientIp();
+        $port = GetClientPort();
+        $fp = fsockopen("tcp://".$address,$port, $errno, $errstr);
+        if (!$fp) {
+            echo "ERROR: $errno - $errstr\n";
         }
+        
+        else
+        {
+            global $ClientArr;
+            $ClientArr[]=$fp;
+            echo fread($fp);
+            fwrite($fp, "hello world");
+            S($username,$fp,array('type'=>'Memcache','expire'=>30*60));
+        	
+        }
+       
+        var_dump($ClientArr);
+        
+    }
+    //查看服务器状体，也用于第一次启动
+    public function ServerState(){
+        //ignore_user_abort(true);//关掉浏览器，PHP脚本也可以继续执行.
+        //set_time_limit(0);// 通过set_time_limit(0)可以让程序无限制的执行下去
+        //$interval=60;// 每隔1分钟运行
+        //while (true)//无限执行下去
+        //{
+        global $ClientArr;
+        if($ClientArr){
+            foreach ($ClientArr as $value)
+            {
+                if(!fwrite($value, "hello world")){
+                    fclose($value);
+                }
+            }
+            
+        }
+        var_dump($ClientArr);
+        //sleep($interval);//暂定延迟1秒
+        //}
     }
     
 }
