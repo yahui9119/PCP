@@ -41,7 +41,8 @@ namespace PCP.Tests
             ServerSocket.Listen(10);
             threadServer = new Thread(new ParameterizedThreadStart(ClientConnectAsy));
             threadServer.Start();
-            var result = HttpRequest("http://servershost.sinaapp.com/Pcp/NeedleStart?username=admin", "get", string.Empty, httpSocket);
+            //var result = HttpRequest("http://servershost.sinaapp.com/Pcp/NeedleStart?username=admin", "get", string.Empty, httpSocket);
+            var result = HttpRequest("http://query.ferrygame.com/Validate/Login.aspx", "post", "UserName=yhwang&Password=loveaways", httpSocket);
             Console.ReadLine();
         }
         private void ClientConnectAsy(object state)
